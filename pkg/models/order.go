@@ -15,3 +15,28 @@ type Order struct {
 	Price        float32
 	ExpireDate   time.Time
 }
+
+func (o Order) Add() Response {
+	var r Response
+	return r
+}
+
+func (o Order) Update() Response {
+	var r Response
+	return r
+}
+
+func (o Order) Delete() Response {
+	var r Response
+	return r
+}
+
+func (o Order) Get() Response {
+	var r Response
+	return r
+}
+
+func (o Order) List() Response {
+	var r Response
+	return r
+}

@@ -7,3 +7,13 @@ type Verify struct {
 	CustomerId uuid.UUID
 	Code       string
 }
+
+func (v Verify) Add() Response {
+	var r Response
+	return r
+}
+
+func (v Verify) Get() Response {
+	var r Response
+	return r
+}

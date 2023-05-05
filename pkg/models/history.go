@@ -13,3 +13,13 @@ type History struct {
 	Ip        string
 	Date      time.Time
 }
+
+func (h History) Add() Response {
+	var r Response
+	return r
+}
+
+func (h History) List() Response {
+	var r Response
+	return r
+}
