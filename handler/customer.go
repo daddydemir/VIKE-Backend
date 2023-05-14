@@ -73,7 +73,7 @@ func customerDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 func customerGet(w http.ResponseWriter, r *http.Request) {
-	var customer mapper.CustomerMapper
+	var customer mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Request Body Can't parse to json :", err)

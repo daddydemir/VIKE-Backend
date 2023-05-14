@@ -52,7 +52,7 @@ func orderUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func orderDelete(w http.ResponseWriter, r *http.Request) {
-	var order mapper.OrderMapper
+	var order mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Request Body Can't parse to json :", err)
@@ -66,13 +66,14 @@ func orderDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// todo: i need created user id {get token parsing}
-	err = json.NewEncoder(w).Encode(service.DeleteExecute(order.ToOrder(uuid.New())))
+	err = json.NewEncoder(w).Encode(service.DeleteExecute(order.ToOrder()))
 	if err != nil {
 		log.Println(err)
 	}
 }
+
 func orderGet(w http.ResponseWriter, r *http.Request) {
-	var order mapper.OrderMapper
+	var order mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Request Body Can't parse to json :", err)
@@ -86,11 +87,12 @@ func orderGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// todo: i need created user id {get token parsing}
-	err = json.NewEncoder(w).Encode(service.GetExecute(order.ToOrder(uuid.New())))
+	err = json.NewEncoder(w).Encode(service.GetExecute(order.ToOrder()))
 	if err != nil {
 		log.Println(err)
 	}
 }
+
 func orderList(w http.ResponseWriter, r *http.Request) {
 	err := json.NewEncoder(w).Encode(service.ListExecute(models.Order{}))
 	if err != nil {

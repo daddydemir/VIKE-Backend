@@ -51,7 +51,7 @@ func adminUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminDelete(w http.ResponseWriter, r *http.Request) {
-	var admin mapper.AdminMapper
+	var admin mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Request Body Can't parse to json :", err)
@@ -71,7 +71,7 @@ func adminDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminGet(w http.ResponseWriter, r *http.Request) {
-	var admin mapper.AdminMapper
+	var admin mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Request Body Can't parse to json :", err)

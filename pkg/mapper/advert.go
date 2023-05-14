@@ -22,6 +22,7 @@ func (a AdvertMapper) ToAdvert(userId uuid.UUID) models.Advert {
 		Stock:        a.Stock,
 		NumberOfUser: a.NumberOfUser,
 		MonthSize:    a.MonthSize,
+		IsActive:     true,
 	}
 	return advert
 }

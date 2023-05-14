@@ -54,27 +54,29 @@ func advertUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func advertDelete(w http.ResponseWriter, r *http.Request) {
-	var advert mapper.AdvertMapper
+	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Request Body Can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.Unmarshal(body, &advert)
+	err = json.Unmarshal(body, &id)
 	if err != nil {
 		log.Println("Request Body can't parse to advertMapper :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.NewEncoder(w).Encode(service.DeleteExecute(advert.ToAdvert(uuid.New())))
+	var advert mapper.AdvertMapper
+
+	err = json.NewEncoder(w).Encode(service.DeleteExecute(models.Advert{AdvertId: id.ToAdvert().AdvertId}))
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 func advertGet(w http.ResponseWriter, r *http.Request) {
-	var advert mapper.AdvertMapper
+	var advert mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Request Body Can't parse to json :", err)
@@ -87,7 +89,7 @@ func advertGet(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.NewEncoder(w).Encode(service.GetExecute(advert.ToAdvert(uuid.New())))
+	err = json.NewEncoder(w).Encode(service.GetExecute(advert.ToAdvert()))
 	if err != nil {
 		log.Println(err)
 	}

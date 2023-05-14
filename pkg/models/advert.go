@@ -40,7 +40,7 @@ func (a Advert) Update() Response {
 func (a Advert) Delete() Response {
 	var r Response
 	a.IsActive = false
-	result := database.Database.Save(&a)
+	result := database.Database.Model(Advert{}).Where("advert_id = ?", a.AdvertId).Save(&a)
 	if result.Error != nil {
 		log.Println("an error occurred while deleting the advert to db :", result.Error)
 		return r.ErrorResponse(result.Error.Error())
@@ -66,5 +66,5 @@ func (a Advert) List() Response {
 		log.Println("an error occurred while listing the adverts to db :", result.Error)
 		return r.ErrorResponse(result.Error.Error())
 	}
-	return r.SuccessResponse(a)
+	return r.SuccessResponse(adverts)
 }

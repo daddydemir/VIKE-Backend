@@ -17,6 +17,7 @@ func CreateTables() {
 		models.Log{},
 		models.Order{},
 		models.Session{},
+		models.Advert{},
 	)
 
 	if err != nil {
