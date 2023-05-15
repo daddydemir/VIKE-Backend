@@ -67,9 +67,10 @@ func advertDelete(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	var advert mapper.AdvertMapper
-
-	err = json.NewEncoder(w).Encode(service.DeleteExecute(models.Advert{AdvertId: id.ToAdvert().AdvertId}))
+	var advert models.Advert
+	advert.AdvertId = id.Parse()
+	advert = advert.GetAdvert()
+	err = json.NewEncoder(w).Encode(service.DeleteExecute(advert))
 	if err != nil {
 		log.Println(err)
 	}

@@ -68,3 +68,11 @@ func (a Advert) List() Response {
 	}
 	return r.SuccessResponse(adverts)
 }
+
+func (a Advert) GetAdvert() Advert {
+	result := database.Database.Find(&a, "advert_id = ?", a.AdvertId)
+	if result.Error != nil {
+		log.Println("ERROR:", result.Error.Error())
+	}
+	return a
+}
