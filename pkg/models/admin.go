@@ -32,7 +32,7 @@ func (a Admin) Update() Response {
 func (a Admin) Delete() Response {
 	var r Response
 	a.IsActive = false
-	result := database.Database.Save(&a)
+	result := database.Database.Model(Admin{}).Where("person_id = ?", a.PersonId).Save(&a)
 	if result.Error != nil {
 		log.Println("an error occurred while deleting the admin to db :", result.Error)
 		return r.ErrorResponse(result.Error.Error())
@@ -59,4 +59,12 @@ func (a Admin) List() Response {
 		return r.ErrorResponse(result.Error.Error())
 	}
 	return r.SuccessResponse(admins)
+}
+
+func (a Admin) GetAdmin() Admin {
+	result := database.Database.Find(&a, "person_id = ?", a.PersonId)
+	if result.Error != nil {
+		log.Println("ERROR:", result.Error.Error())
+	}
+	return a
 }

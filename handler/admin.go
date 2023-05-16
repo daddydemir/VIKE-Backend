@@ -14,7 +14,7 @@ func adminAdd(w http.ResponseWriter, r *http.Request) {
 	var admin mapper.AdminMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -34,7 +34,7 @@ func adminUpdate(w http.ResponseWriter, r *http.Request) {
 	var admin mapper.AdminMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -51,40 +51,40 @@ func adminUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminDelete(w http.ResponseWriter, r *http.Request) {
-	var admin mapper.IdMapper
+	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.Unmarshal(body, &admin)
+	err = json.Unmarshal(body, &id)
 	if err != nil {
 		log.Println("Request Body can't parse to adminMapper :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.NewEncoder(w).Encode(service.DeleteExecute(admin.ToAdmin()))
+	err = json.NewEncoder(w).Encode(service.DeleteExecute(adminHelper(id)))
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 func adminGet(w http.ResponseWriter, r *http.Request) {
-	var admin mapper.IdMapper
+	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.Unmarshal(body, &admin)
+	err = json.Unmarshal(body, &id)
 	if err != nil {
 		log.Println("Request Body can't parse to adminMapper :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.NewEncoder(w).Encode(service.GetExecute(admin.ToAdmin()))
+	err = json.NewEncoder(w).Encode(service.GetExecute(id.ToAdmin()))
 	if err != nil {
 		log.Println(err)
 	}
@@ -96,4 +96,10 @@ func adminList(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadRequest)
 	}
+}
+
+func adminHelper(idMapper mapper.IdMapper) models.Admin {
+	var admin models.Admin
+	admin.PersonId = idMapper.Parse()
+	return admin.GetAdmin()
 }

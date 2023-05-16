@@ -15,7 +15,7 @@ func advertAdd(w http.ResponseWriter, r *http.Request) {
 	var advert mapper.AdvertMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -36,7 +36,7 @@ func advertUpdate(w http.ResponseWriter, r *http.Request) {
 	var advert mapper.AdvertMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -57,7 +57,7 @@ func advertDelete(w http.ResponseWriter, r *http.Request) {
 	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -67,30 +67,27 @@ func advertDelete(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	var advert models.Advert
-	advert.AdvertId = id.Parse()
-	advert = advert.GetAdvert()
-	err = json.NewEncoder(w).Encode(service.DeleteExecute(advert))
+	err = json.NewEncoder(w).Encode(service.DeleteExecute(advertHelper(id)))
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 func advertGet(w http.ResponseWriter, r *http.Request) {
-	var advert mapper.IdMapper
+	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.Unmarshal(body, &advert)
+	err = json.Unmarshal(body, &id)
 	if err != nil {
 		log.Println("Request Body can't parse to advertMapper :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.NewEncoder(w).Encode(service.GetExecute(advert.ToAdvert()))
+	err = json.NewEncoder(w).Encode(service.GetExecute(id.ToAdvert()))
 	if err != nil {
 		log.Println(err)
 	}
@@ -102,4 +99,10 @@ func advertList(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadRequest)
 	}
+}
+
+func advertHelper(idMapper mapper.IdMapper) models.Advert {
+	var advert models.Advert
+	advert.AdvertId = idMapper.Parse()
+	return advert.GetAdvert()
 }

@@ -15,7 +15,7 @@ func customerAdd(w http.ResponseWriter, r *http.Request) {
 	var verify mapper.VerifyMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 	}
 	err = json.Unmarshal(body, &model)
 	if err != nil {
@@ -36,7 +36,7 @@ func customerUpdate(w http.ResponseWriter, r *http.Request) {
 	var customer mapper.CustomerMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -53,40 +53,40 @@ func customerUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func customerDelete(w http.ResponseWriter, r *http.Request) {
-	var customer mapper.CustomerMapper
+	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Request Body Can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.Unmarshal(body, &customer)
+	err = json.Unmarshal(body, &id)
 	if err != nil {
 		log.Println("Request Body can't parse to customerMapper :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.NewEncoder(w).Encode(service.DeleteExecute(customer.ToCustomer()))
+	err = json.NewEncoder(w).Encode(service.DeleteExecute(customerHelper(id)))
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 func customerGet(w http.ResponseWriter, r *http.Request) {
-	var customer mapper.IdMapper
+	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.Unmarshal(body, &customer)
+	err = json.Unmarshal(body, &id)
 	if err != nil {
 		log.Println("Request Body can't parse to customerMapper :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.NewEncoder(w).Encode(service.GetExecute(customer.ToCustomer()))
+	err = json.NewEncoder(w).Encode(service.GetExecute(id.ToCustomer()))
 	if err != nil {
 		log.Println(err)
 	}
@@ -97,4 +97,10 @@ func customerList(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func customerHelper(idMapper mapper.IdMapper) models.Customer {
+	var customer models.Customer
+	customer.PersonId = idMapper.Parse()
+	return customer.GetCustomer()
 }

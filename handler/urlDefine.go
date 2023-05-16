@@ -34,7 +34,7 @@ func Route() http.Handler {
 	r.HandleFunc(base+"u/order", orderUpdate).Methods(http.MethodPost, http.MethodPut)
 	r.HandleFunc(base+"d/order", orderDelete).Methods(http.MethodPost, http.MethodDelete)
 	r.HandleFunc(base+"g/order", orderGet).Methods(http.MethodPost)
-	r.HandleFunc(base+"l/order", orderList).Methods(http.MethodGet)
+	r.HandleFunc(base+"l/order", orderList).Methods(http.MethodPost)
 
 	r.HandleFunc(base+"a/log", logAdd).Methods(http.MethodPost)
 	r.HandleFunc(base+"l/log", logList).Methods(http.MethodGet)

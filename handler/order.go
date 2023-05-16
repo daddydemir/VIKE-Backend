@@ -15,7 +15,7 @@ func orderAdd(w http.ResponseWriter, r *http.Request) {
 	var order mapper.OrderMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -31,11 +31,12 @@ func orderAdd(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 }
+
 func orderUpdate(w http.ResponseWriter, r *http.Request) {
 	var order mapper.OrderMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -51,52 +52,72 @@ func orderUpdate(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 }
+
 func orderDelete(w http.ResponseWriter, r *http.Request) {
-	var order mapper.IdMapper
+	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.Unmarshal(body, &order)
+	err = json.Unmarshal(body, &id)
 	if err != nil {
 		log.Println("Request Body can't parse to orderMapper :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 	// todo: i need created user id {get token parsing}
-	err = json.NewEncoder(w).Encode(service.DeleteExecute(order.ToOrder()))
+	err = json.NewEncoder(w).Encode(service.DeleteExecute(orderHelper(id)))
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 func orderGet(w http.ResponseWriter, r *http.Request) {
-	var order mapper.IdMapper
+	var id mapper.IdMapper
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Println("Request Body Can't parse to json :", err)
+		log.Println("Request Body can't parse to json :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = json.Unmarshal(body, &order)
+	err = json.Unmarshal(body, &id)
 	if err != nil {
 		log.Println("Request Body can't parse to orderMapper :", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 	// todo: i need created user id {get token parsing}
-	err = json.NewEncoder(w).Encode(service.GetExecute(order.ToOrder()))
+	err = json.NewEncoder(w).Encode(service.GetExecute(id.ToOrder()))
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 func orderList(w http.ResponseWriter, r *http.Request) {
-	err := json.NewEncoder(w).Encode(service.ListExecute(models.Order{}))
+	var id mapper.IdMapper
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println("Request Body can't parse to json :", err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = json.Unmarshal(body, &id)
+	if err != nil {
+		log.Println("Request Body can't parse to orderMapper :", err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = json.NewEncoder(w).Encode(service.ListExecute(id.ToOrder()))
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadRequest)
 	}
+}
+
+func orderHelper(idMapper mapper.IdMapper) models.Order {
+	var order models.Order
+	order.OrderId = idMapper.Parse()
+	return order.GetOrder()
 }

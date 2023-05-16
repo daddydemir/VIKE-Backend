@@ -34,7 +34,7 @@ func (c Customer) Update() Response {
 func (c Customer) Delete() Response {
 	var r Response
 	c.IsActive = false
-	result := database.Database.Save(&c)
+	result := database.Database.Model(Customer{}).Where("person_id = ?", c.PersonId).Save(&c)
 	if result.Error != nil {
 		log.Println("an error occurred while deleting the customer to db :", result.Error)
 		return r.ErrorResponse(result.Error.Error())
@@ -64,3 +64,11 @@ func (c Customer) List() Response {
 }
 
 // TODO: find method called and has returned success but data is empty! check this problem
+
+func (c Customer) GetCustomer() Customer {
+	result := database.Database.Find(&c, "person_id = ?", c.PersonId)
+	if result.Error != nil {
+		log.Println("ERROR:", result.Error.Error())
+	}
+	return c
+}
