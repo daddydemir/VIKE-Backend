@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/daddydemir/VIKE-Backend/config/cache"
 	"github.com/daddydemir/VIKE-Backend/handler"
 	"log"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 func main() {
 	log.Println("Server started at http://localhost" + config.Get("PORT"))
 	database.InitConnect()
+	cache.RedisClient()
 	server := &http.Server{
 		Addr:    config.Get("PORT"),
 		Handler: handler.Route(),

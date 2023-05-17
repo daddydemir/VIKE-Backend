@@ -41,6 +41,9 @@ func Route() http.Handler {
 
 	r.HandleFunc(base+"l/history", historyList).Methods(http.MethodGet)
 
+	r.HandleFunc(base+"login", login).Methods(http.MethodPost)
+	r.HandleFunc(base+"admin/login", adminLogin).Methods(http.MethodPost)
+
 	handler := cors.AllowAll().Handler(r)
 	return handler
 }

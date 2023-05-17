@@ -16,7 +16,7 @@ func GenerateToken(model models.Session) string {
 	claims["iat"] = time.Now().Unix()
 	claims["user"] = model.Email
 	claims["session"] = model.SessionId
-	claims["exp"] = time.Now().Add(time.Hour * 24 * 7)
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
 	tokenString, _ := token.SignedString([]byte(config.Get("JWT_KEY")))
 	model.Token = tokenString
